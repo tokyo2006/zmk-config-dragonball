@@ -52,11 +52,11 @@
 / {
 	/* define virtual input, will be resurrected for emitting input event */
 	/* NOTE: set `device = <&pd1>` in `zmk,input-listener` */
-	pd1: virtual_input {
+	pd1: virtual_input_right {
 		compatible = "zmk,virtual-input";
 	};
 
-    pd3: virtual_input {
+    pd3: virtual_input_left {
 		compatible = "zmk,virtual-input";
 	};
 
