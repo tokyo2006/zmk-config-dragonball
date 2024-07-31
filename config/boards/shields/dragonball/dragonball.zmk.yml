@@ -1,0 +1,12 @@
+file_format: "1"
+id: dragonball
+name: Oddball
+type: shield
+url: https://github.com/atulloh/dragonball
+requires: [pro_micro]
+features:
+  - keys
+  - pointer
+siblings:
+  - dragonball_left
+  - dragonball_right
