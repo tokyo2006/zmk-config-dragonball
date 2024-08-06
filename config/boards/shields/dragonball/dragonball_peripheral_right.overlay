@@ -42,7 +42,7 @@
 	pinctrl-0 = <&spi1_default>;
 	pinctrl-1 = <&spi1_sleep>;
 	pinctrl-names = "default", "sleep";
-	cs-gpios = <&gpio0 20 GPIO_ACTIVE_LOW>;
+	cs-gpios = <&gpio0 24 GPIO_ACTIVE_LOW>;
 };
 
 &pd0 {
