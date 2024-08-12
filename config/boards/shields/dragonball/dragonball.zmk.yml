@@ -1,6 +1,6 @@
 file_format: "1"
 id: dragonball
-name: Oddball
+name: Dragonball
 type: shield
 url: https://github.com/atulloh/dragonball
 requires: [pro_micro]
