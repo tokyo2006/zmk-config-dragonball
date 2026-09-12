@@ -5,21 +5,18 @@
  */
 
 #include "dragonball.dtsi"
-#define INPUT_EV_KEY 0x01               /**< Key event */
-#define INPUT_EV_REL 0x02               /**< Relative coordinate event */
-#define INPUT_EV_ABS 0x03               /**< Absolute coordinate event */
-#define INPUT_EV_MSC 0x04               /**< Miscellaneous event */
-#define INPUT_EV_VENDOR_START 0xf0      /**< Vendor specific event start */
-#define INPUT_EV_VENDOR_STOP 0xff       /**< Vendor specific event stop */
-
-#define INPUT_REL_X 0x00                /**< Relative X coordinate */
-#define INPUT_REL_Y 0x01                /**< Relative Y coordinate */
-#define INPUT_REL_WHEEL 0x08            /**< Relative wheel coordinate */
-#define INPUT_REL_HWHEEL 0x06           /**< Relative horizontal wheel coordinate */
-#define INPUT_REL_MISC 0x09             /**< Relative misc coordinate */
-
+#include "trackball.dtsi"
+#include "split_input_common.dtsi"
 
 &kscan0 {
+    compatible = "zmk,kscan-gpio-matrix";
+    label = "KSCAN";
+	row-gpios
+		= <&gpio1 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+		, <&gpio0 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+		, <&gpio1 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+		, <&gpio1 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+        ;
 	col-gpios
 		= <&gpio0 31 GPIO_ACTIVE_HIGH>
 		, <&gpio0 29 GPIO_ACTIVE_HIGH>
@@ -29,38 +26,12 @@
 		;
 };
 
-#include "dragonball_left_trackball.dtsi"
-
-/* enable &pd0 on split peripheral. typical input device for zephyr input subsystem. */
-/* NOTE 1: use the same device alias (&pd0) on central and peripheral(s) is alright. */
-/* NOTE 2: input event shall be intecepted by module `zmk-split-peripheral-input-relay`. */
 &spi1 {
-  status = "okay";
-	pinctrl-0 = <&spi1_default>;
-	pinctrl-1 = <&spi1_sleep>;
-	pinctrl-names = "default", "sleep";
-	cs-gpios = <&gpio0 24 GPIO_ACTIVE_LOW>;
+    status = "okay";
 };
-
-&pd2 {
-  status = "okay";
-	irq-gpios = <&gpio0 22 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-	cpi = <600>;
-	evt-type = <INPUT_EV_REL>;
-	x-input-code = <INPUT_REL_X>;
-	y-input-code = <INPUT_REL_Y>;
+&trackball_split2 {
+	device = <&trackball2>;
 };
-
-/ {
-	/* for peripheral side, define (input-device)-to-(relay-channel) mapping */
-	input_relay_config_103 {
-		compatible = "zmk,split-peripheral-input-relay";
-
-		/* peripheral side input device, used to be intecepted and be resurrected on central */
-		device = <&pd2>;
-		
-		/* channel id, used to annotate raw input event */
-		/* NOTE: should matching relay-channel on central overlay */
-		relay-channel = <103>;
-	};
+&trackball_split { 
+	status = "disabled"; 
 };

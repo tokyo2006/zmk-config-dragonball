@@ -1,22 +1,51 @@
 manifest:
+  version: 1.2
+  defaults:
+    remote: cormoran
+    revision: main
   remotes:
-    - name: zmkfirmware
-      url-base: https://github.com/petejohanson
-    - name: badjeff
-      url-base: https://github.com/badjeff
+    - name: cormoran
+      url-base: https://github.com/cormoran
+    - name: tokyo2006
+      url-base: https://github.com/tokyo2006
   projects:
     - name: zmk
-      remote: zmkfirmware
-      revision: feat/pointers-move-scroll
       import: app/west.yml
-    - name: zmk-pmw3610-driver
-      remote: badjeff
-      revision: main
-    - name: zmk-split-peripheral-input-relay
-      remote: badjeff
-      revision: main
-    - name: zmk-input-behavior-listener
-      remote: badjeff
-      revision: main
+      revision: main+dya
+      clone-depth: 1
+    - name: zephyr
+      revision: v4.1.0+zmk-fixes+nrf-half-duplex-uart
+      clone-depth: 1
+      import:
+        name-blocklist:
+          - ci-tools
+          - hal_altera
+          - hal_cypress
+          - hal_infineon
+          - hal_microchip
+          - hal_nxp
+          - hal_openisa
+          - hal_xtensa
+          - hal_st
+          - hal_ti
+          - loramac-node
+          - mcuboot
+          - mcumgr
+          - net-tools
+          - openthread
+          - edtt
+          - trusted-firmware-m
+          - chre
+    # Level 1: Official ZMK Studio (Keymap tab) - CONFIG_ZMK_STUDIO comes from zmk itself.
+
+    # Level 2: Trackball tab (PMW3610, replaces badjeff/zmk-pmw3610-driver +
+    # badjeff/zmk-split-peripheral-input-relay + badjeff/zmk-input-behavior-listener)
+    - name: zmk-driver-pmw3610-with-custom-studio-rpc
+    - name: zmk-module-runtime-input-processor
+    - name: zmk-feature-custom-settings
+
+    # Dongle OLED status screen (LVGL 9 fixed fork, see englmaxi/zmk-dongle-display#28)
+    - name: zmk-dongle-display
+      remote: tokyo2006
   self:
     path: config
